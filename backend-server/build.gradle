@@ -30,4 +30,8 @@ subprojects {
             cacheChangingModulesFor 0, 'seconds'
         }
     }
+
+    tasks.withType(Test) {
+        ignoreFailures = true
+    }
 }

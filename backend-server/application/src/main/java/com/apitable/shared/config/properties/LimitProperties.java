@@ -40,7 +40,7 @@ public class LimitProperties {
     /**
      * Maximum user space.
      */
-    private Integer spaceMaxCount = 10;
+    private Integer spaceMaxCount = 100;
 
     /**
      * Maximum file size of imported data table.
@@ -89,7 +89,7 @@ public class LimitProperties {
      * Maximum days of recycle bin.
      */
     @Deprecated
-    private Integer rubbishRetainDay = 7;
+    private Integer rubbishRetainDay = 365;
 
     /**
      * Maximum member count of space.
@@ -132,5 +132,5 @@ public class LimitProperties {
     /**
      * max invited record for a single day.
      */
-    private Integer maxInviteCountForFree = 10;
+    private Integer maxInviteCountForFree = 10000;
 }

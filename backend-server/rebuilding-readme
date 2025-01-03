@@ -1,0 +1,7 @@
+# To rebuild the application after modifying the source code:
+# 
+# build the application - note that I have made it so it ignores tests
+./gradlew build
+
+# rebuild the image:
+docker build -t apitable-backend-matt-mod .
