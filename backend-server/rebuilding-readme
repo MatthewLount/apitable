@@ -5,3 +5,10 @@
 
 # rebuild the image:
 docker build -t apitable-backend-matt-mod .
+
+#login and then upload the image:
+docker login
+#username: matthelount, guess the password
+docker push matthewlount/apitable-backend-matt-mod:latest
+
+
