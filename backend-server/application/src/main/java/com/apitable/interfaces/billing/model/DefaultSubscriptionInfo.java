@@ -55,7 +55,8 @@ public class DefaultSubscriptionInfo implements SubscriptionInfo {
 
     @Override
     public boolean isFree() {
-        return true;
+        //return true;
+        return false;
     }
 
     @Override

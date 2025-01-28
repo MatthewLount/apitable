@@ -40,7 +40,7 @@ public class LimitProperties {
     /**
      * Maximum user space.
      */
-    private Integer spaceMaxCount = 100;
+    private Integer spaceMaxCount = 1000;
 
     /**
      * Maximum file size of imported data table.
@@ -95,7 +95,7 @@ public class LimitProperties {
      * Maximum member count of space.
      */
     @Deprecated
-    private Integer memberMaxCount = 100;
+    private Integer memberMaxCount = 1000;
 
     /**
      * Maximum admin number of space.

@@ -76,13 +76,13 @@ public interface SubscriptionFeature {
     FileNodeNums getFileNodeNums();
 
     default ColumnsPerSheet getColumnsPerSheet() {
-        return new ColumnsPerSheet(30L);
+        return new ColumnsPerSheet(50L);
     }
 
     RowsPerSheet getRowsPerSheet();
 
     default SnapshotNumsPerSheet getSnapshotNumsPerSheet() {
-        return new SnapshotNumsPerSheet(0L);
+        return new SnapshotNumsPerSheet(-1L);
     }
 
     ArchivedRowsPerSheet getArchivedRowsPerSheet();
@@ -114,11 +114,11 @@ public interface SubscriptionFeature {
     MirrorNums getMirrorNums();
 
     default DashboardNums getDashboardNums() {
-        return new DashboardNums(0L);
+        return new DashboardNums(-1L);
     }
 
     default WidgetNums getWidgetNums() {
-        return new WidgetNums(0L);
+        return new WidgetNums(-1L);
     }
 
     FieldPermissionNums getFieldPermissionNums();
@@ -165,20 +165,20 @@ public interface SubscriptionFeature {
     AuditQueryDays getAuditQueryDays();
 
     default AuditQuery getAuditQuery() {
-        return new AuditQuery(false);
+        return new AuditQuery(true);
     }
 
     AllowOrgApi getAllowOrgApi();
 
     default AiAgentNums getAiAgentNums() {
-        return new AiAgentNums(0L);
+        return new AiAgentNums(-1L);
     }
 
     default MessageCreditNums getMessageCreditNums() {
-        return new MessageCreditNums(0L);
+        return new MessageCreditNums(-1L);
     }
 
     default AutomationRunNumsPerMonth getAutomationRunNumsPerMonth() {
-        return new AutomationRunNumsPerMonth(0L);
+        return new AutomationRunNumsPerMonth(-1L);
     }
 }

@@ -5,12 +5,19 @@ plugins {
 defaultTasks("build")
 
 allprojects {
+    apply plugin: 'java'
+
     group = "com.apitable"
 
     repositories {
         mavenCentral()
         // for pingpp sdk
         maven { url = uri("https://jcenter.bintray.com") }
+    }
+
+    // ENABLE DEBUG INFO
+    compileJava {
+        options.debugOptions.debugLevel = "source,lines,vars"
     }
 }
 
