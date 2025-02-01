@@ -1,0 +1,46 @@
+# To rebuild the application after modifying the source code:
+# 
+# build the application - note that I have made it so it ignores tests
+# note that I have to open wsl through mobaxterm to run this command and get off the vpn
+#./gradlew build
+
+# rebuild the image:
+#docker build -t matthewlount/apitable-backend-matt-mod .
+
+#login and then upload the image (username: matthewlount):
+#docker login
+
+#tag the image - adjust version number
+#docker tag matthewlount/apitable-backend-matt-mod matthewlount/apitable-backend-matt-mod:v1.
+
+#adjust the version number here before pushing as well
+#docker push matthewlount/apitable-backend-matt-mod:v1.
+#docker push matthewlount/apitable-backend-matt-mod:latest
+
+#Better solution:
+
+#builds the project and makes the images
+make build-docker
+
+#login to docker
+docker login
+
+# Push backend server
+docker push matthewlount/apitable-backend-matt-mod:latest
+docker push matthewlount/apitable-backend-matt-mod:${IMAGE_TAG}
+
+# Push room server
+docker push matthewlount/apitable-room-server-matt-mod:latest
+docker push matthewlount/apitable-room-server-matt-mod:${IMAGE_TAG}
+
+# Push web server
+docker push matthewlount/apitable-web-server-matt-mod:latest
+docker push matthewlount/apitable-web-server-matt-mod:${IMAGE_TAG}
+
+# Push init db
+docker push matthewlount/apitable-init-db-matt-mod:latest
+docker push matthewlount/apitable-init-db-matt-mod:${IMAGE_TAG}
+
+# Push openresty
+docker push matthewlount/apitable-openresty-matt-mod:latest
+docker push matthewlount/apitable-openresty-matt-mod:${IMAGE_TAG}

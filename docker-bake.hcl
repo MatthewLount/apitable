@@ -3,7 +3,7 @@ group "default" {
 }
 
 variable "IMAGE_REGISTRY" {
-  default = "docker.io"
+  default = "docker.io/matthewlount/apitable-"
 }
 
 variable "SEMVER_FULL" {
@@ -20,8 +20,8 @@ target "backend-server" {
   args = {
     SEMVER_FULL = SEMVER_FULL
   }
-  platforms = ["linux/amd64", "linux/arm64"]
-  tags = ["${IMAGE_REGISTRY}/apitable/backend-server:latest", "${IMAGE_REGISTRY}/apitable/backend-server:${IMAGE_TAG}"]
+  platforms = ["linux/amd64"]
+  tags = ["${IMAGE_REGISTRY}backend-matt-mod:latest", "${IMAGE_REGISTRY}backend-matt-mod:${IMAGE_TAG}"]
 }
 
 target "room-server" {
@@ -30,8 +30,8 @@ target "room-server" {
   args = {
     SEMVER_FULL = SEMVER_FULL
   }
-  platforms = ["linux/amd64", "linux/arm64"]
-  tags = ["${IMAGE_REGISTRY}/apitable/room-server:latest", "${IMAGE_REGISTRY}/apitable/room-server:${IMAGE_TAG}"]
+  platforms = ["linux/amd64"]
+  tags = ["${IMAGE_REGISTRY}room-server-matt-mod:latest", "${IMAGE_REGISTRY}room-server-matt-mod:${IMAGE_TAG}"]
 }
 
 target "web-server" {
@@ -41,18 +41,7 @@ target "web-server" {
     SEMVER_FULL = SEMVER_FULL
   }
   platforms = ["linux/amd64"]
-  tags = ["${IMAGE_REGISTRY}/apitable/web-server:latest", "${IMAGE_REGISTRY}/apitable/web-server:${IMAGE_TAG}"]
-}
-
-# https://github.com/apitable/apitable/issues/1379
-target "web-server-experimental" {
-  context = "."
-  dockerfile = "packaging/Dockerfile.web-server"
-  args = {
-    SEMVER_FULL = SEMVER_FULL
-  }
-  platforms = ["linux/amd64", "linux/arm64"]
-  tags = ["${IMAGE_REGISTRY}/apitable/web-server:latest", "${IMAGE_REGISTRY}/apitable/web-server:${IMAGE_TAG}"]
+  tags = ["${IMAGE_REGISTRY}web-server-matt-mod:latest", "${IMAGE_REGISTRY}web-server-matt-mod:${IMAGE_TAG}"]
 }
 
 target "init-db" {
@@ -61,8 +50,8 @@ target "init-db" {
   args = {
     SEMVER_FULL = SEMVER_FULL
   }
-  platforms = ["linux/amd64", "linux/arm64"]
-  tags = ["${IMAGE_REGISTRY}/apitable/init-db:latest", "${IMAGE_REGISTRY}/apitable/init-db:${IMAGE_TAG}"]
+  platforms = ["linux/amd64"]
+  tags = ["${IMAGE_REGISTRY}init-db-matt-mod:latest", "${IMAGE_REGISTRY}init-db-matt-mod:${IMAGE_TAG}"]
 }
 
 target "openresty" {
@@ -71,8 +60,8 @@ target "openresty" {
   args = {
     SEMVER_FULL = SEMVER_FULL
   }
-  platforms = ["linux/amd64", "linux/arm64"]
-  tags = ["${IMAGE_REGISTRY}/apitable/openresty:latest", "${IMAGE_REGISTRY}/apitable/openresty:${IMAGE_TAG}"]
+  platforms = ["linux/amd64"]
+  tags = ["${IMAGE_REGISTRY}openresty-matt-mod:latest", "${IMAGE_REGISTRY}openresty-matt-mod:${IMAGE_TAG}"]
 }
 
 target "all-in-one" {
@@ -83,5 +72,5 @@ target "all-in-one" {
     IMAGE_TAG = IMAGE_TAG
   }
   platforms = ["linux/amd64"]
-  tags = ["${IMAGE_REGISTRY}/apitable/all-in-one:latest", "${IMAGE_REGISTRY}/apitable/all-in-one:${IMAGE_TAG}"]
+  tags = ["${IMAGE_REGISTRY}all-in-one-matt-mod:latest", "${IMAGE_REGISTRY}all-in-one-matt-mod:${IMAGE_TAG}"]
 }

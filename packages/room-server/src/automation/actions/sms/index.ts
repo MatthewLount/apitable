@@ -48,7 +48,7 @@ const jsdomWindow = new JSDOM('').window;
 const purify = DOMPurify(jsdomWindow as any);
 
 export async function sendMail(request: IMailMessageRequest): Promise<IActionResponse<IMailMessageResponse>> {
-  const { mailServer, server, port, account, password, to, subject, message, template } = request;
+  /*const { mailServer, server, port, account, password, to, subject, message, template } = request;
   const transporter = nodemailer.createTransport({
     host: mailServer?.domain || server,
     port: mailServer ? Number(mailServer.port) : Number(port),
@@ -56,7 +56,16 @@ export async function sendMail(request: IMailMessageRequest): Promise<IActionRes
       user: account,
       pass: password,
     }
+  });*/
+
+  //static for our purposes
+  const account = 'no-reply-apitable@nrcan-rncan.gc.ca';
+  const { to, subject, message, template } = request;
+  const transporter = nodemailer.createTransport({
+    host: 'mail.nrcan-rncan.gc.ca',
+    port: 587,
   });
+
   transporter.use('compile', (mail, callback) => {
     if (mail.data.text) {
       // Marked does not sanitize the output HTML.

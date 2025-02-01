@@ -1,5 +1,5 @@
 {
-  "typescript.tsdk": ".yarn/sdks/typescript/lib",
+  "typescript.tsdk": ".yarn\\sdks\\typescript\\lib",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
@@ -101,4 +101,38 @@
   },
   "eslint.nodePath": ".yarn/sdks",
   "typescript.enablePromptUseWorkspaceTsdk": true,
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "java.import.gradle.enabled": true,
+  "java.import.gradle.wrapper.enabled": true,
+  "java.project.sourcePaths": [
+    "backend-server\\application\\src\\main\\java",
+    "backend-server\\shared\\core\\src\\main\\java",
+    "backend-server\\shared\\starters\\*\\src\\main\\java",
+    "backend-server\\plugins\\*\\src\\main\\java",
+    ".",
+    "\\\\wsl.localhost\\Ubuntu\\home\\mlount\\apitable\\apitable\\backend-server\\application\\src\\main\\java\\com\\apitable\\asset\\controller\\ClientController.java"
+  ],
+  "java.configuration.runtimes": [
+    {
+      "name":"JavaSE-21",
+      "path": "/usr/lib/jvm/java-21-openjdk-amd64",
+      "default": true
+    },
+    {
+      "name": "JavaSE-21",
+      "path": "C:\\Program Files\\Eclipse Adoptium\\jdk-21.0.6.7-hotspot\\",
+      "default": true
+    }
+  ],
+  "java.project.referencedLibraries": [
+    "backend-server\\application\\lib\\*.jar"
+  ],
+  "java.project.importOnFirstTimeStartup": "automatic",
+  "java.completion.importOrder": [
+    "java",
+    "javax",
+    "com",
+    "org"
+  ],
+  "java.compile.nullAnalysis.mode": "automatic"
 }

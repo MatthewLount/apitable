@@ -1,5 +1,5 @@
 {
-  "recommendations": [
+  /*"recommendations": [
     "esbenp.prettier-vscode",
     "eamodio.gitlens",
     "arcanis.vscode-zipfs",
@@ -8,5 +8,5 @@
     "styled-components.vscode-styled-components",
     "sonarsource.sonarlint-vscode",
     "souche.vscode-mindmap"
-  ]
+  ]*/
 }

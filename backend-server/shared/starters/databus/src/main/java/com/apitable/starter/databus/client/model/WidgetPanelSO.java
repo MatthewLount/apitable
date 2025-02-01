@@ -14,18 +14,18 @@
 package com.apitable.starter.databus.client.model;
 
 import java.util.Objects;
-import java.util.Arrays;
-import com.apitable.starter.databus.client.model.WidgetInPanelSO;
+//import java.util.Arrays;
+//import com.apitable.starter.databus.client.model.WidgetInPanelSO;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonValue;
+//import com.fasterxml.jackson.annotation.JsonCreator;
+//import com.fasterxml.jackson.annotation.JsonTypeName;
+//import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.ArrayList;
-import java.util.Arrays;
+//import java.util.Arrays;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+//import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * WidgetPanelSO

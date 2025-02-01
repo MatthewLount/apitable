@@ -53,7 +53,7 @@ spring:
     protocol: smtp
     properties:
       mail.debug: true
-      mail.smtp.auth: true
+      mail.smtp.auth: ${MAIL_AUTH_REQUIRED:false} #changed from true to false, added MAIL_AUTH_REQUIRED setting
       mail.smtp.starttls.enable: ${MAIL_STARTTLS_ENABLE:true}
       mail.smtp.starttls.required: ${MAIL_STARTTLS_REQUIRED:true}
       mail.smtp.ssl.enable: ${MAIL_SSL_ENABLE:true}

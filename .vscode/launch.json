@@ -2,6 +2,29 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Launch Chrome against apitable.prager.nrn.nrcan.gc.ca",
+      "type": "chrome",
+      "request": "launch",
+      "url": "https://apitable.prager.nrn.nrcan.gc.ca/",
+      "webRoot": "${workspaceFolder}",
+      "sourceMaps": true,
+      "trace": true,
+      "port": 9222
+    }, 
+    {
+      "type": "java",
+      "name": "Debug Backend Server (Remote)",
+      "request": "attach",
+      //"hostName": "apitable.prager.nrn.nrcan.gc.ca",
+      "hostName": "localhost",
+      "port": 5005,
+      //"projectName": "application",
+      "sourcePaths": [
+        "${workspaceFolder}"
+      ],
+      
+    }
+    /*{
       "name": "Debug Room",
       "type": "node",
       "request": "launch",
@@ -97,7 +120,7 @@
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "disableOptimisticBPs": true,
-    }
+    }*/
 
   ]
 }
