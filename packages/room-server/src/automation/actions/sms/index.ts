@@ -22,6 +22,9 @@ import { JSDOM } from 'jsdom';
 import DOMPurify from 'dompurify';
 import { ResponseStatusCodeEnums } from '../enum/response.status.code.enums';
 import { IActionResponse, IErrorResponse } from '../interface/action.response';
+import { env } from 'process';
+import fs from 'fs';
+import path = require('path');
 
 interface IMailServer {
   domain: string,
@@ -32,8 +35,9 @@ interface IMailMessageRequest {
   mailServer?: IMailServer;
   server?: string;
   port?: string;
-  account: string;
-  password: string;
+  account?: string;
+  user?:string,
+  password?: string;
   to: string;
   subject: string;
   message: string;
@@ -48,23 +52,23 @@ const jsdomWindow = new JSDOM('').window;
 const purify = DOMPurify(jsdomWindow as any);
 
 export async function sendMail(request: IMailMessageRequest): Promise<IActionResponse<IMailMessageResponse>> {
-  /*const { mailServer, server, port, account, password, to, subject, message, template } = request;
-  const transporter = nodemailer.createTransport({
+  const { mailServer, server=env.MAIL_SERVER, port=env.MAIL_PORT, account=env.MAIL_ACCOUNT, user=env.MAIL_USER, password=env.MAIL_PASSWORD, 
+    to, subject, message, template } = request;
+  
+  const options = {
     host: mailServer?.domain || server,
     port: mailServer ? Number(mailServer.port) : Number(port),
-    auth: {
-      user: account,
+    tls: {
+      rejectUnauthorized: env.MAIL_TLS_REJECT_UNAUTHORIZED !== undefined ? Boolean(env.MAIL_TLS_REJECT_UNAUTHORIZED) : undefined,
+      ca: env.MAIL_TLS_CA ? [fs.readFileSync(path.resolve(env.MAIL_TLS_CA))] : undefined
+    },
+    auth: env.MAIL_AUTH ? {
+      user: user,
       pass: password,
-    }
-  });*/
-
-  //static for our purposes
-  const account = 'no-reply-apitable@nrcan-rncan.gc.ca';
-  const { to, subject, message, template } = request;
-  const transporter = nodemailer.createTransport({
-    host: 'mail.nrcan-rncan.gc.ca',
-    port: 587,
-  });
+    } : undefined
+  };
+  
+  const transporter = nodemailer.createTransport(options);
 
   transporter.use('compile', (mail, callback) => {
     if (mail.data.text) {
@@ -98,7 +102,8 @@ export async function sendMail(request: IMailMessageRequest): Promise<IActionRes
     const res: IErrorResponse = {
       errors: [
         {
-          message: error.message,
+          message: (String)(error.message) + '\nhost:' + options.host + '\nport:' + options.port + '\naccount:' + 
+            account + '\n',
         },
       ],
     };

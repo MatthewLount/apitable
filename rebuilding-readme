@@ -19,28 +19,46 @@
 
 #Better solution:
 
-#builds the project and makes the images
+# builds the project and makes the images
+
+# note: disconnect from VPN first
+# also should assign a new API_TABLE_VERSION value: 
+# Options:
+#   export API_TABLE_MAJOR_VERSION=$((${API_TABLE_MAJOR_VERSION} + 1))
+#   export API_TABLE_MINOR_VERSION=0
+#   export API_TABLE_BUG_VERSION=0
+
+#   export API_TABLE_MINOR_VERSION=$((${API_TABLE_MINOR_VERSION} + 1))
+#   export API_TABLE_BUG_VERSION=0
+
+#   export API_TABLE_BUG_VERSION=$((${API_TABLE_BUG_VERSION} + 1))
+
 make build-docker
 
 #login to docker
 docker login
 
 # Push backend server
+docker tag matthewlount/apitable-backend-matt-mod matthewlount/apitable-backend-matt-mod:v${API_TABLE_MAJOR_VERSION}.${API_TABLE_MINOR_VERSION}.${API_TABLE_BUG_VERSION}
 docker push matthewlount/apitable-backend-matt-mod:latest
-docker push matthewlount/apitable-backend-matt-mod:${IMAGE_TAG}
+docker push matthewlount/apitable-backend-matt-mod:v${API_TABLE_MAJOR_VERSION}.${API_TABLE_MINOR_VERSION}.${API_TABLE_BUG_VERSION}
 
 # Push room server
+docker tag matthewlount/apitable-room-server-matt-mod matthewlount/apitable-room-server-matt-mod:v${API_TABLE_MAJOR_VERSION}.${API_TABLE_MINOR_VERSION}.${API_TABLE_BUG_VERSION}
 docker push matthewlount/apitable-room-server-matt-mod:latest
-docker push matthewlount/apitable-room-server-matt-mod:${IMAGE_TAG}
+docker push matthewlount/apitable-room-server-matt-mod:v${API_TABLE_MAJOR_VERSION}.${API_TABLE_MINOR_VERSION}.${API_TABLE_BUG_VERSION}
 
 # Push web server
+docker tag matthewlount/apitable-web-server-matt-mod matthewlount/apitable-web-server-matt-mod:v${API_TABLE_MAJOR_VERSION}.${API_TABLE_MINOR_VERSION}.${API_TABLE_BUG_VERSION}
 docker push matthewlount/apitable-web-server-matt-mod:latest
-docker push matthewlount/apitable-web-server-matt-mod:${IMAGE_TAG}
+docker push matthewlount/apitable-web-server-matt-mod:v${API_TABLE_MAJOR_VERSION}.${API_TABLE_MINOR_VERSION}.${API_TABLE_BUG_VERSION}
 
 # Push init db
+docker tag matthewlount/apitable-init-db-matt-mod matthewlount/apitable-init-db-matt-mod:v${API_TABLE_MAJOR_VERSION}.${API_TABLE_MINOR_VERSION}.${API_TABLE_BUG_VERSION}
 docker push matthewlount/apitable-init-db-matt-mod:latest
-docker push matthewlount/apitable-init-db-matt-mod:${IMAGE_TAG}
+docker push matthewlount/apitable-init-db-matt-mod:v${API_TABLE_MAJOR_VERSION}.${API_TABLE_MINOR_VERSION}.${API_TABLE_BUG_VERSION}
 
 # Push openresty
+docker tag matthewlount/apitable-openresty-matt-mod matthewlount/apitable-openresty-matt-mod:v${API_TABLE_MAJOR_VERSION}.${API_TABLE_MINOR_VERSION}.${API_TABLE_BUG_VERSION}
 docker push matthewlount/apitable-openresty-matt-mod:latest
-docker push matthewlount/apitable-openresty-matt-mod:${IMAGE_TAG}
+docker push matthewlount/apitable-openresty-matt-mod:v${API_TABLE_MAJOR_VERSION}.${API_TABLE_MINOR_VERSION}.${API_TABLE_BUG_VERSION}

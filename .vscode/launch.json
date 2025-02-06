@@ -12,8 +12,8 @@
       "port": 9222
     }, 
     {
-      "type": "java",
       "name": "Debug Backend Server (Remote)",
+      "type": "java",
       "request": "attach",
       //"hostName": "apitable.prager.nrn.nrcan.gc.ca",
       "hostName": "localhost",
@@ -22,7 +22,24 @@
       "sourcePaths": [
         "${workspaceFolder}"
       ],
-      
+    },
+ 
+    {
+      "name": "Debug Room Server (Remote)",
+      "type": "node",
+      "request": "attach",
+      "address": "localhost", // Replace with your server IP
+      "port": 9230,
+      "localRoot": "${workspaceFolder}/packages/room-server",
+      "remoteRoot": "/app/packages/room-server",
+      "sourceMaps": true,
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/packages/room-server/dist/**/*.js"
+      ],
+      "trace": true
     }
     /*{
       "name": "Debug Room",
