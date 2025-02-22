@@ -1,5 +1,6 @@
 {
   "extends": "../../common-tsconfig.json",
+  "sourceMap": true,
   "compilerOptions": {
     "allowJs": true,
     "strict": true,

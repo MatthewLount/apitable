@@ -55,18 +55,25 @@ export async function sendMail(request: IMailMessageRequest): Promise<IActionRes
   const { mailServer, server=env.MAIL_SERVER, port=env.MAIL_PORT, account=env.MAIL_ACCOUNT, user=env.MAIL_USER, password=env.MAIL_PASSWORD, 
     to, subject, message, template } = request;
   
-  const options = {
+  const baseOptions = {
     host: mailServer?.domain || server,
     port: mailServer ? Number(mailServer.port) : Number(port),
+    secure: false,
     tls: {
-      rejectUnauthorized: env.MAIL_TLS_REJECT_UNAUTHORIZED !== undefined ? Boolean(env.MAIL_TLS_REJECT_UNAUTHORIZED) : undefined,
+      rejectUnauthorized: env.MAIL_TLS_REJECT_UNAUTHORIZED && 
+        (env.MAIL_TLS_REJECT_UNAUTHORIZED === 'true' || env.MAIL_TLS_REJECT_UNAUTHORIZED === 'TRUE') ? 
+        true : false,
       ca: env.MAIL_TLS_CA ? [fs.readFileSync(path.resolve(env.MAIL_TLS_CA))] : undefined
-    },
-    auth: env.MAIL_AUTH ? {
+    }
+  };
+  
+  const options = env.MAIL_AUTH && (env.MAIL_AUTH === 'true' || env.MAIL_AUTH === 'TRUE')? {
+    ...baseOptions,
+    auth: {
       user: user,
       pass: password,
-    } : undefined
-  };
+    }
+  } : baseOptions;
   
   const transporter = nodemailer.createTransport(options);
 

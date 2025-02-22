@@ -1,6 +1,6 @@
 SELECT @nextID:=(MAX(id) + 1) AS nextID FROM `${table.prefix}automation_action_type`;
 
-INSERT INTO `${table.prefix}automation_action_type` (id, service_id, action_type_id, name, description, input_json_schema, output_json_schema, endpoint, i18n, is_deleted, created_by, updated_by) 
+INSERT INTO `${table.prefix}automation_action_type` (id, service_id, action_type_id, name, description, input_json_schema, output_json_schema, endpoint, i18n, created_by, updated_by) 
 VALUES (
   @nextID, (SELECT service_id from `${table.prefix}automation_service` WHERE slug = 'sms'), 'aatSSHdFkR7B7197IC', 
   'Send Email', 'Automatically send an email when triggered.', '{
@@ -51,5 +51,5 @@ VALUES (
     "ru-RU": {},
     "zh-CN": {},
     "zh-HK": {}
-  }', 0, 1, 1
+  }', 1, 1
 );

@@ -152,6 +152,8 @@ module.exports = (config, options) => {
   //             callback();
   //         }])
   // }
+  config.devtool = 'source-map'; // or 'eval-source-map' for development
+  config.optimization.minimize = false;
   setResolveAlias(config, options);
 
   setRules(config);
