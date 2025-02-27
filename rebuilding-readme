@@ -33,7 +33,13 @@
 
 #   export API_TABLE_BUG_VERSION=$((${API_TABLE_BUG_VERSION} + 1))
 
-make build-docker
+# make build-docker - all of them at once
+# make _build-docker-init-db
+# make _build-docker-update-appdata
+# make _build-backend-server
+# make _build-docker-room-server
+# make _build-docker-web-server
+# make _build-docker-openresty
 
 #login to docker
 docker login
@@ -57,6 +63,11 @@ docker push matthewlount/apitable-web-server-matt-mod:v${API_TABLE_MAJOR_VERSION
 docker tag matthewlount/apitable-init-db-matt-mod matthewlount/apitable-init-db-matt-mod:v${API_TABLE_MAJOR_VERSION}.${API_TABLE_MINOR_VERSION}.${API_TABLE_BUG_VERSION}
 docker push matthewlount/apitable-init-db-matt-mod:latest
 docker push matthewlount/apitable-init-db-matt-mod:v${API_TABLE_MAJOR_VERSION}.${API_TABLE_MINOR_VERSION}.${API_TABLE_BUG_VERSION}
+
+#push update appdata
+docker tag matthewlount/apitable-update-appdata-matt-mod matthewlount/apitable-update-appdata-matt-mod:v${API_TABLE_MAJOR_VERSION}.${API_TABLE_MINOR_VERSION}.${API_TABLE_BUG_VERSION}
+docker push matthewlount/apitable-update-appdata-matt-mod:latest 
+docker push matthewlount/apitable-update-appdata-matt-mod:v${API_TABLE_MAJOR_VERSION}.${API_TABLE_MINOR_VERSION}.${API_TABLE_BUG_VERSION}
 
 # Push openresty
 docker tag matthewlount/apitable-openresty-matt-mod matthewlount/apitable-openresty-matt-mod:v${API_TABLE_MAJOR_VERSION}.${API_TABLE_MINOR_VERSION}.${API_TABLE_BUG_VERSION}

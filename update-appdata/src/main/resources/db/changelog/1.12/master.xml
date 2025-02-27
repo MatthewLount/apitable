@@ -17,12 +17,10 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
-    <changeSet id="V1.11-20250205-001" author="MatthewLount" labels="automation">
-        <comment>Add automation action</comment>
-        <sqlFile path="db/changelog/1.11/add_automation_action_type.sql"/>
-    </changeSet>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <include file="db/changelog/1.12/20250226_changeset.xml"/>
 </databaseChangeLog>

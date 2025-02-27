@@ -252,9 +252,28 @@ build-docker: ## build all containers
 .PHONY: _build-init-db
 _build-docker-init-db:
 	$(BUILDER) init-db
+
+.PHONY: _build-docker-update-appdata
+_build-docker-update-appdata:
+	$(BUILDER) update-appdata
+
 .PHONY: _build-backend-server
 _build-docker-backend-server:
 	$(BUILDER) backend-server
+
+.PHONY: _build-docker-room-server
+_build-docker-room-server:
+	$(BUILDER) room-server
+
+.PHONY: _build-docker-web-server
+_build-docker-web-server:
+	$(BUILDER) web-server
+		
+.PHONY: _build-docker-openresty
+_build-docker-openresty:
+	$(BUILDER) openresty
+		
+
 
 ###### development environtments ######
 
@@ -433,7 +452,7 @@ major: # bump version number patch
 dataenv: _check_env
 	make dataenv-up
 
-DATAENV_SERVICES := mysql minio redis rabbitmq init-db init-appdata
+DATAENV_SERVICES := mysql minio redis rabbitmq init-db init-appdata update-appdata
 
 .PHONY: dataenv-up
 dataenv-up: _dataenv-volumes

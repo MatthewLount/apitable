@@ -1,5 +1,5 @@
 group "default" {
-  targets = ["backend-server", "room-server", "web-server", "init-db", "openresty"]
+  targets = ["backend-server", "room-server", "web-server", "init-db", "openresty", "update-appdata"]
 }
 
 variable "IMAGE_REGISTRY" {
@@ -52,6 +52,16 @@ target "init-db" {
   }
   platforms = ["linux/amd64"]
   tags = ["${IMAGE_REGISTRY}init-db-matt-mod:latest", "${IMAGE_REGISTRY}init-db-matt-mod:${IMAGE_TAG}"]
+}
+
+target "update-appdata" {
+  context = "./update-appdata"
+  dockerfile = "Dockerfile"
+  args = {
+    SEMVER_FULL = SEMVER_FULL
+  }
+  platforms = ["linux/amd64"]
+  tags = ["${IMAGE_REGISTRY}update-appdata-matt-mod:latest", "${IMAGE_REGISTRY}update-appdata-matt-mod:${IMAGE_TAG}"]
 }
 
 target "openresty" {

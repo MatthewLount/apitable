@@ -37,3 +37,5 @@ tmp
 
 # other
 .DS_Store
+
+!update-appdata/

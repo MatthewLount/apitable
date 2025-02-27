@@ -116,6 +116,8 @@ services:
         condition: service_started
       init-appdata:
         condition: service_completed_successfully
+      update-appdata:
+        condition: service_completed_successfully
 
   minio:
     container_name: minio
@@ -240,6 +242,19 @@ services:
       mysql:
         condition: service_healthy
       init-db:
+        condition: service_completed_successfully
+
+  update-appdata:
+    image: ${IMAGE_REGISTRY}/${IMAGE_UPDATE_APPDATA}
+    pull_policy: ${IMAGE_PULL_POLICY:-if_not_present} 
+    env_file:
+      - "${ENV_FILE:-.env}"
+    networks:
+      - apitable
+    depends_on:
+      mysql:
+        condition: service_healthy
+      init-appdata:
         condition: service_completed_successfully
 
 networks:
