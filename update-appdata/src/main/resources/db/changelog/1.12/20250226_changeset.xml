@@ -3,7 +3,7 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
-    <changeSet id="V1.12-20250226-001" author="MatthewLount" labels="automation" runAlways="true">
+    <changeSet id="V1.12-20250226-001" author="MatthewLount" labels="automation" runAlways="true" runOnChange="true">
         <comment>Mark deleted old email automation action type</comment>
         <sqlFile path="db/changelog/1.12/delete_email_automation_action_type.sql"/>
     </changeSet>
@@ -17,8 +17,12 @@
         <comment>Add email automation action type</comment>
         <sqlFile path="db/changelog/1.12/add_email_automation_action_type.sql"/>
     </changeSet>
-    <changeSet id="V1.12-20250226-003" author="MatthewLount" labels="automation" runAlways="true">
+    <changeSet id="V1.12-20250226-003" author="MatthewLount" labels="automation" runAlways="true" runOnChange="true">
         <comment>Update email automation action type</comment>
         <sqlFile path="db/changelog/1.12/update_email_automation_action_type.sql"/>
+    </changeSet>
+    <changeSet id="V1.12-20250226-004" author="MatthewLount" labels="automation" runAlways="true" runOnChange="true">
+        <comment>Remove (not working) shedule trigger</comment>
+        <sqlFile path="db/changelog/1.12/remove_schedule_trigger_type.sql"/>
     </changeSet>
 </databaseChangeLog>

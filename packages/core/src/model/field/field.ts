@@ -37,7 +37,7 @@ import { StatTranslate, StatType } from './stat';
 import { joiErrorResult } from './validate_schema';
 
 // China sensitive string comparison `collators` constructor.
-export const zhIntlCollator = typeof Intl !== 'undefined' ? new Intl.Collator('zh-CN') : undefined;
+export const zhIntlCollator = typeof Intl !== 'undefined' ? new Intl.Collator('en-US') : undefined;
 /**
  * The business class should not become a complex container, it is better to be just a pipeline of data flow
  * Here we use the form of classes to build business calculation methods,
@@ -302,7 +302,7 @@ export abstract class Field {
 
     // test pinyin sort
     return str1 === str2 ? 0 :
-      zhIntlCollator ? zhIntlCollator.compare(str1, str2) : (str1.localeCompare(str2, 'zh-CN') > 0 ? 1 : -1);
+      zhIntlCollator ? zhIntlCollator.compare(str1, str2) : (str1.localeCompare(str2, 'en-US') > 0 ? 1 : -1);
   }
 
   /**

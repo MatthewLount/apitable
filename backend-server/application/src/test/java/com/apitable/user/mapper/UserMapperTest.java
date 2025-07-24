@@ -159,7 +159,7 @@ public class UserMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/sql/user-data.sql")
     void testSelectLocaleInEmailsWithDefaultLocale() {
-        List<UserLangDTO> entities = userMapper.selectLocaleInEmailsWithDefaultLocale("zh-CN", CollUtil.newArrayList("41@apitable.com"));
+        List<UserLangDTO> entities = userMapper.selectLocaleInEmailsWithDefaultLocale("en-US", CollUtil.newArrayList("41@apitable.com"));
         assertThat(entities).isNotEmpty();
     }
 

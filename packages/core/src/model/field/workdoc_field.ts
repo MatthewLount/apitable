@@ -139,7 +139,7 @@ export class WorkDocField extends ArrayValueField {
 
     // test pinyin sort
     return str1 === str2 ? 0 :
-      zhIntlCollator ? zhIntlCollator.compare(str1, str2) : (str1.localeCompare(str2, 'zh-CN') > 0 ? 1 : -1);
+      zhIntlCollator ? zhIntlCollator.compare(str1, str2) : (str1.localeCompare(str2, 'en-US') > 0 ? 1 : -1);
   }
 
   override isMeetFilter(operator: FOperator, cellValue: ISegment[] | null, conditionValue: Exclude<IFilterText, null>) {
