@@ -435,7 +435,7 @@ export class DatasheetRecordService {
         | undefined = await this.recordRepo.selectRevisionHistoryByDstIdAndRecordId(dstId, recordId);
       if (result && result.revisionHistory) {
         const revisions = result.revisionHistory.split(',');
-        if (limitDays) {
+        if (limitDays && limitDays >= 0) {
           return this.datasheetChangesetService.getRecordModifyRevisions(dstId, revisions, limitDays);
         }
         return revisions;
