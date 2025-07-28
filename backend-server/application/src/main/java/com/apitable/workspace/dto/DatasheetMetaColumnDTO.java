@@ -21,18 +21,12 @@ package com.apitable.workspace.dto;
 import lombok.Data;
 
 /**
- * node share DTO.
+ * Datasheet Meta Column DTO.
  */
 @Data
-public class NodeShareDTO {
+public class DatasheetMetaColumnDTO {
 
-    private String nodeId;
+    private String dstId;
 
-    private String shareId;
-
-    private String spaceId;
-
-    private Long operator;
-
-    private Boolean isEnabled;
+    private Integer mdFieldMapSize;
 }
