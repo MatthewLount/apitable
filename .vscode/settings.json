@@ -20,6 +20,7 @@
     "ARRAYCOMPACT",
     "arrayjoin",
     "ARRAYUNIQUE",
+    "ARRAYDIFF",
     "attname",
     "changesets",
     "Colla",

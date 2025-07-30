@@ -592,7 +592,6 @@ export class LookUpField extends ArrayValueField {
         case RollUpFuncType.CONCATENATE:
           return _flatCellValue;
         case RollUpFuncType.ARRAYUNIQUE:
-          //return uniqWith(_flatCellValue as any[], (cv1, cv2) => Field.bindContext(entityField, this.state).eq(cv1, cv2));
           const boundField = Field.bindContext(entityField, this.state);
           let unique = uniqWith(_flatCellValue as any[], (cv1, cv2) => 
             boundField.eq(cv1, cv2)

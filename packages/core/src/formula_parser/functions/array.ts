@@ -95,6 +95,34 @@ export class ArrayJoin extends ArrayFunc {
   }
 }
 
+export class ArrayDiff extends ArrayFunc {
+  static override validateParams(_params: AstNode[]) {
+    //
+  }
+
+  static override getReturnType(params: AstNode[]) {
+    params && this.validateParams(params);
+    return BasicValueType.Array;
+  }
+
+  static override func([mainArray, removeArray]: [IFormulaParam, IFormulaParam]): any[] {
+    if (!mainArray || !removeArray) {
+      return [];
+    }
+    
+    const { value: mainValues, node: mainNode } = mainArray;
+    const { value: removeValues, node: removeNode } = removeArray;
+    const uniqueMainValues = [... new Set(mainValues)];
+    const uniqueRemoveValues = [... new Set(removeValues)];
+
+    if (mainNode.valueType === BasicValueType.Array && removeNode.valueType === BasicValueType.Array) {
+      return uniqueMainValues.filter((item: any) => !uniqueRemoveValues.includes(item));
+    }
+
+    return mainValues;
+  }
+}
+
 export class ArrayUnique extends ArrayFunc {
   static override validateParams(_params: AstNode[]) {
     //

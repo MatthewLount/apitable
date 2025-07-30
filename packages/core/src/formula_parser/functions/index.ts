@@ -587,6 +587,13 @@ export const Functions = new Map<string, IFunction>([
     summary: t(Strings.function_arrayunique_summary),
     example: t(Strings.function_arrayunique_example),
   }],
+  ['ARRAYDIFF', {
+    name: 'ARRAYDIFF',
+    func: array.ArrayDiff,
+    definition: 'ARRAYDIFF([item1, item2, item3], [item3, item1])',
+    summary: t(Strings.function_arraydiff_summary),
+    example: t(Strings.function_arraydiff_example),
+  }],
   ['ARRAYJOIN', {
     name: 'ARRAYJOIN',
     func: array.ArrayJoin,

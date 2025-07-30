@@ -2258,6 +2258,8 @@ export type StringKeysMapType = {
   'function_arrayjoin_summary': 'function_arrayjoin_summary',
   'function_arrayunique_example': 'function_arrayunique_example',
   'function_arrayunique_summary': 'function_arrayunique_summary',
+  'function_arraydiff_example': 'function_arraydiff_example', 
+  'function_arraydiff_summary': 'function_arraydiff_summary',
   'function_associate_sheet': 'function_associate_sheet',
   'function_average_example': 'function_average_example',
   'function_average_summary': 'function_average_summary',
