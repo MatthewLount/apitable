@@ -100,6 +100,10 @@ function resolverWrapper(context: IFormulaContext): ResolverFunction {
     }
     if (fieldBasicValueType === BasicValueType.Array) {
       // TODO what if field is undefined?
+      
+      if (field!.type === FieldType.Link || field!.type === FieldType.LookUp || field!.type === FieldType.Formula)
+        return cellValue;
+
       return (Field.bindContext(field!, state) as ArrayValueField).cellValueToArray(cellValue as any);
     }
     return cellValue;

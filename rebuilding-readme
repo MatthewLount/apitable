@@ -41,6 +41,12 @@
 # make _build-docker-web-server
 # make _build-docker-openresty
 
+make build-docker
+
+export API_TABLE_MAJOR_VERSION=1
+export API_TABLE_MINOR_VERSION=13
+export API_TABLE_BUG_VERSION=0-beta.1-2
+
 #login to docker
 docker login
 
