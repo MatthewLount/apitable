@@ -116,7 +116,9 @@ export class ArrayDiff extends ArrayFunc {
     const uniqueRemoveValues = [... new Set(removeValues)];
 
     if (mainNode.valueType === BasicValueType.Array && removeNode.valueType === BasicValueType.Array) {
-      return uniqueMainValues.filter((item: any) => !uniqueRemoveValues.includes(item));
+      return uniqueMainValues.filter((item: any) => { 
+        return (!uniqueRemoveValues.includes(item) && item != null);
+      });
     }
 
     return mainValues;
