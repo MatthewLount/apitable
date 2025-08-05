@@ -28,6 +28,11 @@ import { EventSourceTypeEnums, OPEventNameEnums } from './../../enum';
 import {
   IAtomEvent, IEventInstance, IEventTestResult, IOPBaseContext, IOPEvent
 } from './../../interface/event.interface';
+import { getFieldMap } from 'modules/database/store/selectors/resource/datasheet/calc';
+import { Field } from '../../../model/field';
+import { LastModifiedTimeField } from '../../../model/field/last_modified_time_field';
+import { LastModifiedByField } from '../../../model/field/last_modified_by_field';
+import { FieldType, CollectType } from '../../../types/field_types';
 
 interface IRecordMetaUpdated {
   datasheetId: string;
@@ -136,7 +141,47 @@ export class OPEventRecordUpdated extends ICombEventType {
         event.context.fields = fields;
         // This eventFields is used for trigger output, where fieldValue is eventCV converted by cv
         event.context.eventFields = eventFields;
+
+        const fieldMap = getFieldMap(state, datasheetId);
+        if (fieldMap) {
+          const originalDiffFields = event.context.diffFields || [];
+          const computedFieldsToAdd: string[] = [];
+          
+          // Check for LastModifiedTime fields that should be included
+          Object.values(fieldMap).forEach(field => {
+            if (field.type === FieldType.LastModifiedTime) {
+              const lastModField = Field.bindContext(field, state) as LastModifiedTimeField;
+              const { collectType, fieldIdCollection } = lastModField.field.property;
+              
+              // Check if this LastModifiedTime field should update based on the changed fields
+              const shouldUpdate = collectType === CollectType.AllFields 
+                ? originalDiffFields.length > 0 // Any field change triggers this
+                : originalDiffFields.some(fieldId => fieldIdCollection.includes(fieldId)); // Specific fields
+              
+              if (shouldUpdate && !originalDiffFields.includes(field.id)) {
+                computedFieldsToAdd.push(field.id);
+              }
+            }
+            
+            // Do the same for LastModifiedBy fields
+            if (field.type === FieldType.LastModifiedBy) {
+              const lastModField = Field.bindContext(field, state) as LastModifiedByField;
+              const { collectType, fieldIdCollection } = lastModField.field.property;
+              
+              const shouldUpdate = collectType === CollectType.AllFields 
+                ? originalDiffFields.length > 0
+                : originalDiffFields.some(fieldId => fieldIdCollection.includes(fieldId));
+              
+              if (shouldUpdate && !originalDiffFields.includes(field.id)) {
+                computedFieldsToAdd.push(field.id);
+              }
+            }
+          });
+          
+          event.context.diffFields = [...originalDiffFields, ...computedFieldsToAdd];
+        }
       }
+      
       return event;
     });
   }
