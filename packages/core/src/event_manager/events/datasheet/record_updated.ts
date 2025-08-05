@@ -156,7 +156,7 @@ export class OPEventRecordUpdated extends ICombEventType {
               // Check if this LastModifiedTime field should update based on the changed fields
               const shouldUpdate = collectType === CollectType.AllFields 
                 ? originalDiffFields.length > 0 // Any field change triggers this
-                : originalDiffFields.some(fieldId => fieldIdCollection.includes(fieldId)); // Specific fields
+                : originalDiffFields.some((fieldId: string) => fieldIdCollection.includes(fieldId)); // Specific fields
               
               if (shouldUpdate && !originalDiffFields.includes(field.id)) {
                 computedFieldsToAdd.push(field.id);
@@ -170,7 +170,7 @@ export class OPEventRecordUpdated extends ICombEventType {
               
               const shouldUpdate = collectType === CollectType.AllFields 
                 ? originalDiffFields.length > 0
-                : originalDiffFields.some(fieldId => fieldIdCollection.includes(fieldId));
+                : originalDiffFields.some((fieldId: string) => fieldIdCollection.includes(fieldId));
               
               if (shouldUpdate && !originalDiffFields.includes(field.id)) {
                 computedFieldsToAdd.push(field.id);
