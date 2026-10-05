@@ -28,7 +28,11 @@ export const OPACITY_LINE_CLASS = 'opacityLineClass';
 
 export const EDITOR_CONTAINER = 'editor-container';
 
-export const DEFAULT_LINK_RECORD_COUNT = 20;
+export const DEFAULT_LINK_RECORD_COUNT = 100; // increased from 20
+
+// Shared maximum number of linked record pills shown directly inside a grid cell.
+// Was previously hard-coded as 20 in multiple files.
+export const LINK_CELL_MAX_VISIBLE = 100;
 
 export const OPERATE_BUTTON_CLASS = 'operateButton';
 

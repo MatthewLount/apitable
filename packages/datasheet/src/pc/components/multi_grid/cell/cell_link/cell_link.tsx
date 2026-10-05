@@ -44,9 +44,8 @@ const ERROR_DATA = Symbol('ERROR_DATA');
 const ARCHIVED_DATA = Symbol('ARCHIVED_DATA');
 const NO_PERMISSION = Symbol('NO_PERMISSION');
 
-// Tentatively display up to 20 nodes of associated records in a cell
-// TODO: Dynamically display the number of nodes and omitted characters in combination with cell size and data
-const MAX_SHOW_LINK_IDS_COUNT = 20;
+// Max number of linked record ids to render directly (shared constant in utils/constant.ts)
+import { LINK_CELL_MAX_VISIBLE } from 'pc/utils/constant';
 
 interface ICellLink extends ICellComponentProps {
   field: ILinkField | IOneWayLinkField;
@@ -61,11 +60,16 @@ export const CellLink: React.FC<React.PropsWithChildren<ICellLink>> = (props) =>
   // To edit an link field, you need to have edit permission on both datasheets.
   const [showTip, setShowTip] = useState(false);
   const field = Selectors.findRealField(store.getState(), propsField);
-  const linkRecordIds = field
-    ? Field.bindModel(field).validate(cellValue)
-      ? (cellValue as string[]).slice(0, MAX_SHOW_LINK_IDS_COUNT)
-      : undefined
+
+  // Maintain full list and visible slice so we can show a "+N" indicator and expand inline when clicked.
+  const fullLinkRecordIds: string[] | undefined = field && Field.bindModel(field).validate(cellValue) ? (cellValue as string[]) : undefined;
+  const [showAll, setShowAll] = useState(false);
+  const linkRecordIds = fullLinkRecordIds
+    ? showAll
+      ? fullLinkRecordIds
+      : fullLinkRecordIds.slice(0, LINK_CELL_MAX_VISIBLE)
     : [];
+  const hiddenCount = fullLinkRecordIds ? fullLinkRecordIds.length - linkRecordIds.length : 0;
   const { ignoreMirror, baseDatasheetId } = useContext(ExpandLinkContext) || {};
 
   const allowShowTip = readonly && isActive;
@@ -204,6 +208,19 @@ export const CellLink: React.FC<React.PropsWithChildren<ICellLink>> = (props) =>
             </div>
           );
         })}
+        {!showAll && hiddenCount > 0 && (
+          <div
+            className={classNames(styles.tabItem, styles.link, 'link')}
+            key="__more"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowAll(true);
+            }}
+            style={{ cursor: 'pointer' }}
+          >
+            <div className={classNames(styles.optionText)}>{`+${hiddenCount}`}</div>
+          </div>
+        )}
       </>
     );
   }

@@ -1,9 +1,9 @@
 # Base image with Amazon Corretto JDK
-FROM amazoncorretto:17
+FROM amazoncorretto:21
 
 # Set environment variables
 ENV LANG=C.UTF-8
-ENV JAVA_HOME=/usr/lib/jvm/java-17-amazon-corretto
+ENV JAVA_HOME=/usr/lib/jvm/java-21-amazon-corretto
 
 # Set the working directory
 WORKDIR /app

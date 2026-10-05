@@ -1,0 +1,160 @@
+version: "3.9"
+
+services:
+  # Development web server (datasheet)
+  web-server:
+    image: localhost/apitable-web-server:dev-latest
+    restart: unless-stopped
+    ports:
+      - "3000:8080"  # Expose on host port 3000
+    env_file:
+      - ".env"
+    environment:
+      - NODE_ENV=development
+      - TZ=${TIMEZONE:-UTC}
+      - API_PROXY=http://backend-server:8081
+    networks:
+      - apitable-dev
+    depends_on:
+      backend-server:
+        condition: service_healthy
+      room-server:
+        condition: service_started
+
+  # Backend server (Spring Boot)
+  backend-server:
+    image: localhost/apitable-backend-server:dev-latest
+    restart: unless-stopped
+    ports:
+      - "8081:8081"  # Expose for direct access
+      - "5005:5005"  # Debug port
+    env_file:
+      - ".env"
+    environment:
+      - TZ=${TIMEZONE:-UTC}
+      - DEFAULT_TIME_ZONE=${TIMEZONE:-UTC}
+      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Xmx2g
+      - SERVER_PORT=8081
+    networks:
+      - apitable-dev
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      init-db:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sS 'http://localhost:8081/api/v1/health' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      start_period: 60s
+      retries: 12
+
+  # Room server (Node.js/NestJS)
+  room-server:
+    image: localhost/apitable-room-server:dev-latest
+    restart: unless-stopped
+    ports:
+      - "3333:3333"  # Room server
+      - "3001:3001"  # Socket server
+      - "3002:3002"  # Notification server
+    env_file:
+      - ".env"
+    environment:
+      - NODE_ENV=development
+      - TZ=${TIMEZONE:-UTC}
+      - NODE_OPTIONS=--max-old-space-size=2048 --max-http-header-size=80000
+      - ENABLE_SOCKET=true
+      - SERVER_PORT=3333
+    networks:
+      - apitable-dev
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  # Database initialization
+  init-db:
+    image: localhost/apitable-init-db:dev-latest
+    env_file:
+      - ".env"
+    environment:
+      - ACTION=update
+    networks:
+      - apitable-dev
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  # MySQL database
+  mysql:
+    image: mysql:8.0
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD:-apitable@com}
+      - MYSQL_DATABASE=${MYSQL_DATABASE:-apitable}
+      - MYSQL_USER=${MYSQL_USERNAME:-apitable}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD:-apitable@com}
+      - TZ=${TIMEZONE:-UTC}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./backend-server/shared/starters/appstarter/src/main/resources/db/changelog/mysql:/docker-entrypoint-initdb.d/
+    networks:
+      - apitable-dev
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_PASSWORD:-apitable@com}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    command: >
+      --default-authentication-plugin=mysql_native_password
+      --sql-mode=IGNORE_SPACE,NO_ZERO_DATE,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+      --lower_case_table_names=2
+
+  # Redis cache
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    environment:
+      - TZ=${TIMEZONE:-UTC}
+    volumes:
+      - redis_data:/data
+    networks:
+      - apitable-dev
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  # Nginx gateway (optional - for production-like routing)
+  gateway:
+    image: localhost/apitable-openresty:dev-latest
+    restart: unless-stopped
+    ports:
+      - "80:80"    # Main entry point
+      - "443:443"  # HTTPS
+    environment:
+      - TZ=${TIMEZONE:-UTC}
+    networks:
+      - apitable-dev
+    depends_on:
+      - web-server
+      - backend-server
+      - room-server
+
+volumes:
+  mysql_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  apitable-dev:
+    driver: bridge

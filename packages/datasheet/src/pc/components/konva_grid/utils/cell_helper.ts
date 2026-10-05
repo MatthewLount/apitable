@@ -118,7 +118,7 @@ const calcFileWidth = (file: IAttachmentValue, ratioHeight: number) => {
   return ratioHeight * ratio;
 };
 
-const MAX_SHOW_LINK_IDS_COUNT = 20;
+import { LINK_CELL_MAX_VISIBLE } from 'pc/utils/constant'; // was local const = 20
 
 const getMaxLine = (rowHeightLevel: RowHeightLevel, viewType: ViewType) => {
   switch (rowHeightLevel) {
@@ -1239,7 +1239,9 @@ export class CellHelper extends KonvaDrawer {
      * Then if it's a directly rendered associated field, pageParams.nodeId === currentResourceId
      */
     const { x, y, field, cellValue, rowHeight, columnWidth, rowHeightLevel, isActive, editable, callback, currentResourceId } = renderProps;
-    const linkRecordIds = Array.isArray(cellValue) ? (cellValue as string[]).slice(0, MAX_SHOW_LINK_IDS_COUNT) : [];
+  const fullLinkRecordIds = Array.isArray(cellValue) ? (cellValue as string[]) : [];
+  const linkRecordIds = fullLinkRecordIds.slice(0, LINK_CELL_MAX_VISIBLE);
+  const hiddenCount = fullLinkRecordIds.length - linkRecordIds.length;
     const state = store.getState();
     const NO_DATA = Symbol('NO_DATA');
     const ERROR_DATA = Symbol('ERROR_DATA');
@@ -1262,9 +1264,16 @@ export class CellHelper extends KonvaDrawer {
           text: ERROR_DATA,
         };
       }
-
-      if (!snapshot.recordMap[recordId]) {
-        if (archivedRecordIds.includes(recordId)) {
+      }
+      return { recordId, text: (Field.bindModel(field) as LinkField).getLinkedRecordCellString(recordId) };
+    });
+    if (hiddenCount > 0) {
+      linkInfoList.push({
+        recordId: '__more',
+        text: `+${hiddenCount}`,
+        disabled: true,
+      });
+    }
           return {
             recordId,
             text: ARCHIVED_DATA,
