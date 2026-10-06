@@ -69,6 +69,7 @@ import { setColor } from 'pc/components/multi_grid/format';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { emojiUrl, getCellValueThumbSrc, renderFileIconUrl, showOriginImageThumbnail, UploadManager } from 'pc/utils';
+import { LINK_CELL_MAX_VISIBLE } from 'pc/utils/constant';
 import { getEnvVariables } from 'pc/utils/env';
 import { getDatasheetOrLoad } from 'pc/utils/get_datasheet_or_load';
 import { loadRecords } from 'pc/utils/load_records';
@@ -117,8 +118,6 @@ const calcFileWidth = (file: IAttachmentValue, ratioHeight: number) => {
   const ratio = file.width / file.height;
   return ratioHeight * ratio;
 };
-
-import { LINK_CELL_MAX_VISIBLE } from 'pc/utils/constant'; // was local const = 20
 
 const getMaxLine = (rowHeightLevel: RowHeightLevel, viewType: ViewType) => {
   switch (rowHeightLevel) {
@@ -1239,9 +1238,9 @@ export class CellHelper extends KonvaDrawer {
      * Then if it's a directly rendered associated field, pageParams.nodeId === currentResourceId
      */
     const { x, y, field, cellValue, rowHeight, columnWidth, rowHeightLevel, isActive, editable, callback, currentResourceId } = renderProps;
-  const fullLinkRecordIds = Array.isArray(cellValue) ? (cellValue as string[]) : [];
-  const linkRecordIds = fullLinkRecordIds.slice(0, LINK_CELL_MAX_VISIBLE);
-  const hiddenCount = fullLinkRecordIds.length - linkRecordIds.length;
+    const fullLinkRecordIds = Array.isArray(cellValue) ? (cellValue as string[]) : [];
+    const linkRecordIds = fullLinkRecordIds.slice(0, LINK_CELL_MAX_VISIBLE);
+    const hiddenCount = fullLinkRecordIds.length - linkRecordIds.length;
     const state = store.getState();
     const NO_DATA = Symbol('NO_DATA');
     const ERROR_DATA = Symbol('ERROR_DATA');
@@ -1264,8 +1263,33 @@ export class CellHelper extends KonvaDrawer {
           text: ERROR_DATA,
         };
       }
+
+      if (!snapshot.recordMap[recordId]) {
+        if (archivedRecordIds.includes(recordId)) {
+          return {
+            recordId,
+            text: ARCHIVED_DATA,
+            disabled: true,
+          };
+        }
+        if (!isLoading && datasheetClient!.loadingRecord[recordId] === 'error') {
+          return {
+            recordId,
+            text: ERROR_DATA,
+            disabled: true,
+          };
+        }
+        emptyRecords.push(recordId);
+        return {
+          recordId,
+          text: NO_DATA,
+          disabled: true,
+        };
       }
-      return { recordId, text: (Field.bindModel(field) as LinkField).getLinkedRecordCellString(recordId) };
+      return {
+        recordId,
+        text: (Field.bindModel(field) as LinkField).getLinkedRecordCellString(recordId),
+      };
     });
     if (hiddenCount > 0) {
       linkInfoList.push({
@@ -1274,31 +1298,6 @@ export class CellHelper extends KonvaDrawer {
         disabled: true,
       });
     }
-          return {
-            recordId,
-            text: ARCHIVED_DATA,
-            disabled: true
-          };
-        }
-        if (!isLoading && datasheetClient!.loadingRecord[recordId] === 'error') {
-          return {
-            recordId,
-            text: ERROR_DATA,
-            disabled: true
-          };
-        }
-        emptyRecords.push(recordId);
-        return {
-          recordId,
-          text: NO_DATA,
-          disabled: true
-        };
-      }
-      return {
-        recordId,
-        text: (Field.bindModel(field) as LinkField).getLinkedRecordCellString(recordId),
-      };
-    });
 
     /**
      * Because the front-end only maintains a portion of the data in the association table that has already been associated.
